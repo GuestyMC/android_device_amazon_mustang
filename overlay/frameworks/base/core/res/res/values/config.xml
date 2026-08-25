@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+**
+** Copyright 2016 The Android Open Source Project
+**           2019-2020 The LineageOS Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <bool name="config_automatic_brightness_available">true</bool>
+
+    <!-- Boolean indicating whether the wifi chipset supports background scanning mechanism.
+         This mechanism allows the host to remain in suspend state and the dongle to actively
+         scan and wake the host when a configured SSID is detected by the dongle. This chipset
+         capability can provide power savings when wifi needs to be always kept on. -->
+    <bool translatable="false" name="config_wifi_background_scan_support">true</bool>
+
+    <string-array name="networkAttributes" translatable="false" >
+        <item>wifi,1,1,2,-1,true</item>
+        <item>bluetooth,7,7,0,-1,true</item>
+        <item>ethernet,9,9,0,-1,true</item>
+    </string-array>
+
+     <!-- radio modes. -->
+    <string-array name="radioAttributes" translatable="false">
+        <item>1,1</item>
+        <item>7,1</item>
+        <item>9,1</item>
+    </string-array>
+
+    <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
+         The N entries of this array define N  1 zones as follows:
+         Zone 0:        0 <= LUX < array[0]
+         Zone 1:        array[0] <= LUX < array[1]
+         ...
+         Zone N:        array[N - 1] <= LUX < array[N]
+         Zone N + 1     array[N] <= LUX < infinity
+         Must be overridden in platform specific overlays -->
+    <integer-array name="config_autoBrightnessLevels">
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>50</item>
+        <item>100</item>
+        <item>230</item>
+        <item>400</item>
+        <item>500</item>
+        <item>650</item>
+        <item>825</item>
+        <item>1000</item>
+        <item>2500</item>
+        <item>5000</item>
+        <item>6250</item>
+        <item>8400</item>
+        <item>9500</item>
+        <item>10240</item>
+    </integer-array>
+
+    <!-- Array of output values for LCD backlight corresponding to the LUX values
+         in the config_autoBrightnessLevels array.  This array should have size one greater
+         than the size of the config_autoBrightnessLevels array.
+         This must be overridden in platform specific overlays -->
+    <integer-array name="config_autoBrightnessLcdBacklightValues">
+        <item>12</item>     <!-- 0-5 -->
+        <item>16</item>     <!-- 6-7 -->
+        <item>18</item>     <!-- 8-9 -->
+        <item>20</item>     <!-- 10-14 -->
+        <item>25</item>     <!-- 15-29 -->
+        <item>28</item>     <!-- 30-49 -->
+        <item>34</item>     <!-- 50-99 -->
+        <item>37</item>     <!-- 100-229 -->
+        <item>41</item>     <!-- 239-399 -->
+        <item>48</item>     <!-- 400-499 -->
+        <item>57</item>     <!-- 500-649 -->
+        <item>75</item>     <!-- 650-824 -->
+        <item>81</item>     <!-- 825-999 -->
+        <item>90</item>     <!-- 1000-2499 -->
+        <item>100</item>    <!-- 2500-4999 -->
+        <item>125</item>    <!-- 5000-6249 -->
+        <item>165</item>    <!-- 6250-7499 -->
+        <item>200</item>    <!-- 7500-9999 -->
+        <item>225</item>    <!-- 10000-11999 -->
+        <item>255</item>    <!-- 12000-19417 (max value of light sensor) -->
+    </integer-array>
+
+
+  <!-- Stability requirements in milliseconds for accepting a new brightness level.  This is used
+         for debouncing the light sensor.  Different constants are used to debounce the light sensor
+         when adapting to brighter or darker environments.  This parameter controls how quickly
+         brightness changes occur in response to an observed change in light level that exceeds the
+         hysteresis threshold. -->
+    <integer name="config_autoBrightnessBrighteningLightDebounce">4000</integer>
+    <integer name="config_autoBrightnessDarkeningLightDebounce">5000</integer>
+
+    <bool name="config_voice_capable">false</bool>
+
+    <!-- Flag indicating whether the current device allows sms service.
+         If true, this means that the device supports both sending and
+         receiving sms via the telephony network.
+         This can be overridden to false for "data only" devices
+         which can't send and receive sms message.
+         Note: Disable SMS also disable voicemail waiting sms,
+               cell broadcasting sms, and MMS. -->
+    <bool name="config_sms_capable">false</bool>
+
+    <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
+    <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
+
+    <!-- Default list of files pinned by the Pinner Service -->
+    <string-array translatable="false" name="config_defaultPinnerServiceFiles">
+        <item>"/system/framework/framework.jar"</item>
+        <item>"/system/framework/services.jar"</item>
+        <item>"/apex/com.android.runtime/javalib/core-oj.jar"</item>
+        <item>"/apex/com.android.runtime/javalib/core-libart.jar"</item>
+        <item>"/apex/com.android.media/javalib/updatable-media.jar"</item>
+        <item>"/product/priv-app/SystemUI/SystemUI.apk"</item>
+        <item>"/system/lib/libsurfaceflinger.so"</item>
+    </string-array>
+
+    <!-- Should the pinner service pin the Home application? -->
+    <bool name="config_pinnerHomeApp">true</bool>
+
+     <!-- Whether a software navigation bar should be shown. NOTE: in the future this may be
+         autodetected from the Configuration. -->
+    <bool name="config_showNavigationBar">true</bool>
+
+    <bool name="config_enableWifiDisplay">true</bool>
+
+    <!-- Disable lockscreen rotation by default -->
+    <bool name="config_enableLockScreenRotation">true</bool>
+
+    <!-- If true, the screen can be rotated via the accelerometer in all 4
+         rotations as the default behavior. -->
+    <bool name="config_allowAllRotations">true</bool>
+
+    <!-- If supported, are dreams enabled? (by default) -->
+    <bool name="config_dreamsEnabledByDefault">true</bool>
+
+    <!-- Control the behavior when the user long presses the home button.
+            0 - Nothing
+            1 - Launch all apps intent
+            2 - Launch assist intent
+         This needs to match the constants in
+         policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+    -->
+    <integer name="config_longPressOnHomeBehavior">2</integer>
+
+
+    <!-- Boolean indicating whether the HWC setColorTransform function can be performed efficiently
+         in hardware. -->
+    <bool name="config_setColorTransformAccelerated">true</bool>
+
+
+    <!-- When true use the linux /dev/input/event subsystem to detect the switch changes
+         on the headphone/microphone jack. When false use the older uevent framework. -->
+    <bool name="config_useDevInputEventForAudioJack">false</bool>
+
+
+
+    <!-- If this is true, the screen will come on when you plug/unplug usb/power/whatever. -->
+    <bool name="config_unplugTurnsOnScreen">true</bool>
+
+
+    <!--  Maximum number of supported users -->
+    <integer name="config_multiuserMaximumUsers">8</integer>
+
+    <!--  Whether Multiuser UI should be shown -->
+    <bool name="config_enableMultiUserUI">true</bool>
+
+   <!-- Indicate whether closing the lid causes the device to go to sleep and opening
+         it causes the device to wake up.
+         The default is false. -->
+    <bool name="config_lidControlsSleep">true</bool>
+
+    <!-- Enable doze mode
+         ComponentName of a dream to show whenever the system would otherwise have gone to sleep. -->
+    <string name="config_dozeComponent">com.android.systemui/com.android.systemui.doze.DozeService</string>
+
+    <!-- If true, the doze component is not started until after the screen has been turned off
+         and the screen off animation has been performed. -->
+      <bool name="config_dozeAfterScreenOffByDefault">true</bool>
+    <!-- Specifies whether to decouple the interactive state of the device from the display on/off state. -->
+    <bool name="config_powerDecoupleInteractiveModeFromDisplay">true</bool>
+    <!-- Auto Power Modes is required for Doze and App Standby -->
+    <bool name="config_enableAutoPowerModes">true</bool>
+    <!-- Whether to allow process with media UID to access CameraServiceProxy -->
+    <bool name="config_allowMediaUidForCameraServiceProxy">true</bool>
+    <!-- Screen brightness used to dim the screen while dozing in a very low power state.
+         May be less than the minimum allowed brightness setting
+         that can be set by the user. -->
+    <integer name="config_screenBrightnessDoze">25</integer>
+
+    <!-- Allow automatic adjusting of the screen brightness while dozing in low power state. -->
+    <bool name="config_allowAutoBrightnessWhileDozing">true</bool>
+
+    <!-- Minimum screen brightness setting allowed by the power manager.
+         The user is forbidden from setting the brightness below this level. -->
+    <integer name="config_screenBrightnessSettingMinimum">1</integer>
+
+    <!-- If we allow automatic adjustment of screen brightness while dozing, how many times we want
+         to reduce it to preserve the battery. Value of 100% means no scaling. -->
+    <fraction name="config_screenAutoBrightnessDozeScaleFactor">50%</fraction>
+
+    <!-- True if the firmware supports Wi-Fi link probing -->
+    <bool name="config_wifi_link_probing_supported">true</bool>
+
+    <!-- Enable Zram writeback feature to allow unused pages in zram be written to flash. -->
+    <bool name="config_zramWriteback">true</bool>
+
+    <!-- Control whether Night display is available. This should only be enabled on devices
+         that have a HWC implementation that can apply the matrix passed to setColorTransform
+         without impacting power, performance, and app compatibility (e.g. protected content). -->
+    <bool name="config_nightDisplayAvailable">false</bool>
+
+    <!-- The component name, flattened to a string, for the default autofill service
+         to  enabled for an user. This service must be trusted, as it can be activated
+         without explicit consent of the user. If no autofill service with the
+          specified name exists on the device, autofill will be disabled by default.
+    -->
+    <string name="config_defaultAutofillService" translatable="false">com.google.android.gms/.autofill.service.AutofillService</string>
+
+    <!-- Component name for default assistant on this device -->
+    <string name="config_defaultAssistantComponentName">com.google.android.googlequicksearchbox/com.google.android.voiceinteraction.GsaVoiceInteractionService</string>
+    
+        <!-- The name of the package that will hold the assistant role by default. -->
+    <string name="config_defaultAssistant" translatable="false">com.google.android.googlequicksearchbox</string>
+
+    <!-- An array of packages for which notifications cannot be blocked.
+         Should only be used for core device functionality that must not be
+         rendered inoperative for safety reasons, like the phone dialer and
+         SMS handler. -->
+    <string-array translatable="false" name="config_nonBlockableNotificationPackages">
+        <item>com.android.dialer</item>
+        <item>com.android.messaging</item>
+        <item>com.google.android.dialer</item>
+        <item>com.google.android.dialer:phone_incoming_call</item>
+        <item>com.google.android.deskclock:Firing</item>
+        <item>com.google.android.setupwizard</item>
+        <item>com.google.android.apps.pixelmigrate</item>
+    </string-array>
+
+   <!-- The package of the time zone rules data application. Expected to be configured
+         by OEMs to reference their own priv-app APK package.
+         A package-targeted com.android.intent.action.timezone.TRIGGER_RULES_UPDATE_CHECK intent
+         will be sent to the updater app if the system server detects an update to the updater or
+         data app packages.
+         [This is only used if config_enableUpdateableTimeZoneRules and
+         config_timeZoneRulesUpdateTrackingEnabled are true.] -->
+    <string name="config_timeZoneRulesDataPackage" translatable="false">com.google.android.timezone.data</string>
+
+    <!-- Colon separated list of package names that should be granted Notification Listener access -->
+    <string name="config_defaultListenerAccessPackages" translatable="false">com.google.android.apps.nexuslauncher:com.google.android.setupwizard:com.google.android.apps.pixelmigrate:com.google.android.as</string>
+
+    <!-- Package name that should be granted Notification Assistant access -->
+    <string name="config_defaultAssistantAccessPackage" translatable="false">com.google.android.ext.services</string>
+
+    <!-- Colon separated list of package names that should be granted DND access -->
+    <string name="config_defaultDndAccessPackages" translatable="false">com.google.android.gms:com.google.android.GoogleCamera:com.google.intelligence.sense:com.android.settings.intelligence</string>
+
+    <!-- The package name for the default wellbeing app.
+         This package must be trusted, as it has the permissions to control other applications
+         on the device.
+         Example: "com.android.wellbeing"
+     -->
+    <string name="config_defaultWellbeingPackage" translatable="false">com.google.android.apps.wellbeing</string>
+
+    <!-- The package name for the default system textclassifier service.
+         This service must be trusted, as it can be activated without explicit consent of the user.
+         Example: "com.android.textclassifier"
+         If no textclassifier service with the specified name exists on the device (or if this is
+         set to empty string), a default textclassifier will be loaded in the calling app's process.
+         See android.view.textclassifier.TextClassificationManager.
+    -->
+    <string name="config_defaultTextClassifierPackage" translatable="false">com.google.android.as</string>
+
+    <!-- An array of packages that need to be treated as type service in battery settings -->
+    <string-array translatable="false" name="config_batteryPackageTypeService">
+        <item>com.google.android.gms</item>
+        <item>com.google.android.apps.gcs</item>
+    </string-array>
+    <!-- Flag indicating whether we should enable smart battery. -->
+    <bool name="config_smart_battery_available">true</bool>
+
+    <!-- The list of components which should be automatically disabled for a specific device. -->
+    <string-array name="config_deviceDisabledComponents" translatable="false">
+        <item>com.google.android.gms/com.google.android.gms.nearby.messages.service.NearbyMessagesService</item>
+        <item>com.google.android.gms/com.google.android.gms.nearby.discovery.service.DiscoveryService</item>
+    </string-array>
+
+    <!-- Controls the navigation bar interaction mode:
+         0: 3 button mode (back, home, overview buttons)
+         1: 2 button mode (back, home buttons + swipe up for overview)
+         2: gestures only for back, home and overview -->
+    <integer name="config_navBarInteractionMode">2</integer>
+</resources>

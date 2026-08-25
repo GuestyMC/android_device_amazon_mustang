@@ -1,0 +1,13 @@
+# CABC/AAL mode switching (from stock init.project.rc)
+service cabc_on_off /vendor/bin/cabc_on_off.sh
+    class main
+    user root
+    group system
+    oneshot
+    disabled
+
+on property:vendor.hwc.video_mode=1
+    start cabc_on_off
+
+on property:vendor.hwc.video_mode=0
+    start cabc_on_off
