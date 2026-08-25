@@ -15,7 +15,7 @@ Based on the mt8163/karnak LOS 18.1 stack, ported to the Fire 7 2019 hardware.
 | SoC | MediaTek MT8163 |
 | CPU | 1.3 GHz quad-core ARM Cortex-A53 |
 | GPU | Mali-T720 MP2 |
-| RAM | 1 GB / 2 GB |
+| RAM | 1 GB |
 | Storage | 16 GB / 32 GB |
 | Display | 600x1024 IPS, 7.0" |
 | Battery | 3750 mAh |
