@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019-2020 The LineageOS Project
+# Copyright (C) 2019-2024 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,18 +33,21 @@ TARGET_BOARD_PLATFORM_GPU := mali-720mp2
 # Bootloader
 TARGET_NO_BOOTLOADER := true
 
-# Architecture
-TARGET_ARCH := arm
-TARGET_CPU_VARIANT := cortex-a7
-TARGET_ARCH_VARIANT := armv7-a-neon
-TARGET_ARCH_VARIANT_CPU := cortex-a7
-TARGET_CPU_VARIANT:= cortex-a7
-TARGET_CPU_ABI := armeabi-v7a
-TARGET_CPU_ABI2 := armeabi
+# Architecture (64-bit primary with 32-bit compat)
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_VARIANT := cortex-a53
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_CPU_VARIANT := cortex-a7
+TARGET_2ND_CPU_ABI := armeabi-v7a
+
+TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_SMP := true
 
 # Kernel Config
-BOARD_KERNEL_IMAGE_NAME := zImage-dtb
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_BASE := 0x40080000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_OFFSET := 0x00000000
@@ -52,18 +55,22 @@ BOARD_KERNEL_TAGS_OFFSET := 0x07f80000
 BOARD_RAMDISK_OFFSET := 0x03400000
 BOARD_SECOND_OFFSET := 0x00e80000
 
+BOARD_RAMDISK_USE_LZ4 := true
+
 BOARD_MKBOOTIMG_ARGS := \
     --kernel_offset $(BOARD_KERNEL_OFFSET) \
     --ramdisk_offset $(BOARD_RAMDISK_OFFSET) \
     --second_offset $(BOARD_SECOND_OFFSET)   \
     --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 
-TARGET_KERNEL_ARCH := arm
+TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_SOURCE := kernel/amazon/mustang
 TARGET_KERNEL_CONFIG := lineageos_mustang_defconfig
 TARGET_KERNEL_VARIANT_CONFIG := lineageos_mustang_defconfig
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
-AMAZON_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+TARGET_KERNEL_OPTIONAL_LD := true
+TARGET_KERNEL_CLANG_COMPILE := false
+AMAZON_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
@@ -77,6 +84,7 @@ BOARD_HAS_MTK_HARDWARE := true
 TARGET_COPY_OUT_VENDOR := vendor
 BOARD_USES_VENDORIMAGE := true
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_USES_METADATA_PARTITION := true
 
 # Binder API version
 TARGET_USES_64_BIT_BINDER := true
@@ -102,6 +110,7 @@ WIFI_DRIVER_FW_PATH_P2P:=P2P
 WIFI_DRIVER_STATE_CTRL_PARAM := /dev/wmtWifi
 WIFI_DRIVER_STATE_ON := 1
 WIFI_DRIVER_STATE_OFF := 0
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 
 # BT
 BOARD_HAS_BLUETOOTH := true
@@ -126,8 +135,7 @@ BLOCK_BASED_OTA := true
 # Seccomp filters
 BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/configs/seccomp
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
-
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
 
 # Vold
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.usb0/lun.%d/file
@@ -142,15 +150,10 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/BOOT/BOOT/boot/boot_mode
 # Manifest
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 DEVICE_MATRIX_FILE   := $(DEVICE_PATH)/compatibility_matrix.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/device_framework_compatibility_matrix.xml
 
 # OTA assert
 TARGET_OTA_ASSERT_DEVICE:= mustang
-
-# Enable Minikin text layout engine (will be the default soon)
-USE_MINIKIN := true
-
-# Fix video autoscaling on old OMX decoders
-TARGET_OMX_LEGACY_RESCALING:= true
 
 # Display
 TARGET_SCREEN_DENSITY := 160
@@ -161,6 +164,7 @@ TARGET_FORCE_CPU_UPLOAD := true
 
 # Audio
 USE_XML_AUDIO_POLICY_CONF := 1
+USE_CUSTOM_AUDIO_POLICY := 1
 
 # Exclude AudioFx
 TARGET_EXCLUDES_AUDIOFX := true
@@ -177,12 +181,13 @@ TARGET_USES_HWC2 := true
 
 # Treble
 SELINUX_IGNORE_NEVERALLOWS := true
-BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
-PRODUCT_FULL_TREBLE_OVERRIDE := true
-PRODUCT_VENDOR_MOVE_ENABLED := true
-BOARD_VNDK_VERSION  := current
 BUILD_BROKEN_PREBUILT_ELF_FILES := true
 BUILD_BROKEN_VINTF_PRODUCT_COPY_FILES := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
+
+# APEX - flatten APEXes to bypass eBPF/kernel version requirements on 4.9 kernel
+OVERRIDE_TARGET_FLATTEN_APEX := true
 
 # LMKD stats logging
 TARGET_LMKD_STATS_LOG := true
@@ -217,3 +222,6 @@ BUILD_BROKEN_DUP_RULES := true
 
 # Disable API check
 WITHOUT_CHECK_API := true
+
+# Disable configstore (deprecated in A12+)
+BOARD_USES_CONFIGSTORE := false

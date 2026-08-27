@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019-2020 The LineageOS Project
+# Copyright (C) 2019-2024 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,14 +36,20 @@ PRODUCT_PACKAGES +=\
 
 # Power
 PRODUCT_PACKAGES +=\
+    android.hardware.power@1.0-service \
+    android.hardware.power@1.0-impl \
+    android.hardware.power@1.1.vendor \
+    android.hardware.power@1.2.vendor \
     power.mt8163
 
 # Memtrack
 PRODUCT_PACKAGES += \
+    android.hardware.memtrack@1.0-impl \
+    android.hardware.memtrack@1.0-service \
     memtrack.mt8163
 
 # fdsan-disable shim injected into the OMX service via libMtkOmxVenc.so
-# DT_NEEDED (blob closes fence fds with wrong ownership -> SIGABRT on A11)
+# DT_NEEDED (blob closes fence fds with wrong ownership -> SIGABRT)
 PRODUCT_PACKAGES += \
     libnofdsan
 
@@ -54,20 +60,33 @@ PRODUCT_PACKAGES +=\
 
 # Wi-Fi
 PRODUCT_PACKAGES += \
+    android.hardware.wifi-service \
     libwpa_client \
     hostapd \
-    dhcpcd.conf \
     wpa_supplicant \
-    wpa_supplicant.conf \
     libwifi-hal-mt66xx
 
 # Sensor
 PRODUCT_PACKAGES += \
+    android.hardware.sensors@1.0-impl-mediatek \
+    android.hardware.sensors@1.0-service-mediatek \
+    android.frameworks.sensorservice@1.0 \
+    android.frameworks.sensorservice@1.0.vendor \
     sensors.mt8163 \
     libsensorndkbridge
 
 # Audio
 PRODUCT_PACKAGES += \
+    android.hardware.audio@4.0-impl \
+    android.hardware.audio.effect@4.0-impl \
+    android.hardware.audio@2.0-service \
+    android.hardware.audio@2.0.vendor \
+    android.hardware.soundtrigger@2.1-impl \
+    android.hardware.soundtrigger@2.0.vendor \
+    android.hardware.bluetooth.a2dp@1.0.vendor \
+    android.hardware.bluetooth.audio-impl \
+    audio.bluetooth.default \
+    audio.primary.default \
     audio.r_submix.mt8163 \
     audio.usb.default \
     audio.a2dp.default \
@@ -82,15 +101,51 @@ PRODUCT_PACKAGES += \
     tinymix \
     tinypcminfo \
     tinycap \
-    tinyplay
+    tinyplay \
+    headsetd
+
+# Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-impl-mediatek \
+    android.hardware.bluetooth@1.0-service-mediatek
+
+# Health
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.1-service \
+    android.hardware.health@2.1-impl
+
+# DRM
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl \
+    android.hardware.drm@1.0-service \
+    android.hardware.drm@1.1.vendor \
+    android.hardware.drm@1.4-service.clearkey \
+    libdrm \
+    libmockdrmcryptoplugin \
+    libdrmclearkeyplugin
 
 # EGL
 PRODUCT_PACKAGES += \
-  libGLES_android
+    libGLES_android
 
 # Net
 PRODUCT_PACKAGES += \
     netutils-wrapper-1.0
+
+# USB
+PRODUCT_PACKAGES += \
+    android.hardware.usb@1.0 \
+    android.hardware.usb@1.0-service.basic
+
+# Graphics
+PRODUCT_PACKAGES += \
+    android.hardware.renderscript@1.0-impl \
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.mapper@2.0-impl \
+    android.hardware.graphics.mapper@2.0-impl-2.1 \
+    android.hardware.graphics.composer@2.1-service \
+    libion
 
 # Ramdisk
 PRODUCT_PACKAGES += \
@@ -101,6 +156,72 @@ PRODUCT_PACKAGES += \
     fstab.mt8163 \
     fstab.mt8163_first_stage \
     ueventd.mt8163.rc \
+
+# Camera - use Aperture/Snap instead of Camera2 (fixes video recording)
+PRODUCT_PACKAGES += \
+    camera.device@1.0-impl \
+    camera.device@3.2-impl \
+    Aperture
+
+# Gatekeeper
+PRODUCT_PACKAGES += \
+    android.hardware.gatekeeper@1.0-impl \
+    android.hardware.gatekeeper@1.0-service
+
+# Keymaster
+PRODUCT_PACKAGES += \
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.keymaster@3.0-service
+
+# Light
+PRODUCT_PACKAGES += \
+    android.hardware.light@2.0-impl-mediatek \
+    android.hardware.light@2.0-service-mediatek
+
+# OMX
+PRODUCT_PACKAGES += \
+    android.hardware.media.omx@1.0-service \
+    libstagefright_omx.vendor
+
+# Suspend
+PRODUCT_PACKAGES += \
+    libsuspend
+
+# Disable SF configstore (deprecated in A12+)
+PRODUCT_PACKAGES += \
+    disable_configstore
+
+# etc
+PRODUCT_PACKAGES += \
+    libcap
+
+# Libshims
+PRODUCT_PACKAGES += \
+    libshim_graphic_buffer \
+    libshim_gui \
+    libshim_keymaster \
+    libshim_mtkcam.vendor \
+    libshim_nvram
+
+# Protobuf
+PRODUCT_PACKAGES += \
+    libprotobuf-cpp-full-vendorcompat \
+    libprotobuf-cpp-lite-vendorcompat
+
+# VNDK
+PRODUCT_PACKAGES += \
+    vndk_package \
+    libstdc++.vendor
+
+PRODUCT_PACKAGES += \
+    libladder \
+    libudf
+
+# Other
+PRODUCT_PACKAGES += \
+    librs_jni \
+    libnl_2 \
+    com.android.future.usb.accessory
 
 # Audio
 PRODUCT_COPY_FILES += \
@@ -170,40 +291,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
 
-# Camera
-PRODUCT_PACKAGES += \
-    Camera2
-
-# DRM
-PRODUCT_PACKAGES += \
-    libdrm \
-    libmockdrmcryptoplugin \
-    libdrmclearkeyplugin
-
-# Net
-PRODUCT_PACKAGES += \
-    netutils-wrapper-1.0
-
-# etc
-PRODUCT_PACKAGES += \
-    libion \
-    libcap
-
-# Suspend
- PRODUCT_PACKAGES += \
-     libsuspend
-
-# Other
-PRODUCT_PACKAGES += \
-    librs_jni \
-    libnl_2 \
-    com.android.future.usb.accessory
-
-# Bluetooth
-PRODUCT_PACKAGES += \
-    libbluetooth_mtk \
-    libbt-vendor
-
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/tablet_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/tablet_core_hardware.xml \
@@ -223,34 +310,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.sip.voip.xml \
 
-
-# Protobuf
-PRODUCT_PACKAGES += \
-    libprotobuf-cpp-full-vendorcompat \
-    libprotobuf-cpp-lite-vendorcompat \
-    libkeymaster_messages-v28
-
-# Libshims
-PRODUCT_PACKAGES += \
-     libshim_graphic_buffer \
-     libshim_gui \
-     libshim_keymaster \
-     libshim_mtkcam.vendor \
-     libshim_nvram
-
-# VNDK
-PRODUCT_PACKAGES += \
-     vndk_package \
-	 libstdc++.vendor
-
-PRODUCT_PACKAGES += \
-    libladder \
-    libudf
-
 # Dex
 PRODUCT_DEXPREOPT_SPEED_APPS += \
     SystemUI
 
+# Enable DM file pre-opting to reduce first boot time
+PRODUCT_DEX_PREOPT_GENERATE_DM_FILES := true
 
 # Hidl
 include $(LOCAL_PATH)/hidl.mk

@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019-2020 The LineageOS Project
+# Copyright (C) 2019-2024 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -174,10 +174,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.stagefright.omx_default_rank.sw-audio=1 \
     debug.stagefright.omx_default_rank=0
 
-# Pixel identification
-PRODUCT_PRODUCT_PROPERTIES += \
-    ro.build.fingerprint=google/redfin/redfin:11/RQ3A.211001.001/7641976:user/release-keys
-
 # adb on boot
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp,adb
@@ -191,3 +187,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.asp.speaker.passthrough=true \
     persist.asp.voice.passthrough=true \
     persist.asp.asr.passthrough=true
+
+# 64-bit userland
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.dalvik.bridge.system_ext.oat64=true \
+    persist.sys.dalvik.vm.lib.2=libart.so
