@@ -14,10 +14,13 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-     $(LOCAL_DIR)/lineage_mustang.mk
+     $(LOCAL_DIR)/lineage_mustang.mk \
+     $(LOCAL_DIR)/twrp_mustang.mk
 
 COMMON_LUNCH_CHOICES := \
     lineage_mustang-userdebug \
     lineage_mustang-eng \
-    lineage_mustang-user
+    lineage_mustang-user \
+    twrp_mustang-userdebug \
+    twrp_mustang-eng
 

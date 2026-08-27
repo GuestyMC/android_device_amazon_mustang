@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Building with minimal manifest (for OrangeFox)
+ALLOW_MISSING_DEPENDENCIES := true
+
 DEVICE_PATH := device/amazon/mustang
 
 # Headers
@@ -204,7 +207,7 @@ RECOVERY_VARIANT := twrp
 WITH_TWRP := true
 endif
 TARGET_RECOVERY_DEVICE_DIRS += device/amazon/mustang/twrp
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/twrp/recovery/root/recovery.fstab
 TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone2/temp
 DEVICE_RESOLUTION := 600x1024
 TW_DEFAULT_EXTERNAL_STORAGE := true
@@ -214,6 +217,20 @@ TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_DEFAULT_BRIGHTNESS := 128
 TW_AMONET := true
 TW_DEFAULT_BACKUP_LIST := "/system_image;/vendor_image;/data;/boot;"
+BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
+TW_INCLUDE_REPACKTOOLS := true
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LIBRESETPROP := true
+TW_INCLUDE_LPDUMP := true
+TW_INCLUDE_LPTOOLS := true
+TW_INCLUDE_NTFS_3G := true
+TW_USE_TOOLBOX := true
+TARGET_USES_MKE2FS := true
+TW_NO_SCREEN_BLANK := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_EXTRA_LANGUAGES := true
+TW_DEFAULT_LANGUAGE := en
 
 #Use dlmalloc instead of jemalloc for mallocs
 MALLOC_SVELTE := true
