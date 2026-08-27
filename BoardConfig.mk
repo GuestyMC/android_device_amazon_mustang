@@ -143,8 +143,11 @@ BLOCK_BASED_OTA := true
 
 # Seccomp filters
 BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/configs/seccomp
+# Skip device sepolicy for recovery-only builds (OF/TWRP) - too many missing types in AOSP 14+
+ifeq ($(wildcard vendor/twrp/config/common.mk),)
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
+endif
 
 # Vold
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.usb0/lun.%d/file
