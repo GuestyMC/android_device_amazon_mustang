@@ -21,9 +21,13 @@ DEVICE_PATH := device/amazon/mustang
 # Headers
 TARGET_SPECIFIC_HEADER_PATH := $(DEVICE_PATH)/include
 
-# Inherit from the proprietary versions
+# Inherit from the proprietary versions (skip for recovery-only builds)
+ifeq ($(wildcard vendor/amazon/mt8163/BoardConfigVendor.mk),vendor/amazon/mt8163/BoardConfigVendor.mk)
 include vendor/amazon/mt8163/BoardConfigVendor.mk
+endif
+ifeq ($(wildcard vendor/amazon/mustang/BoardConfigVendor.mk),vendor/amazon/mustang/BoardConfigVendor.mk)
 include vendor/amazon/mustang/BoardConfigVendor.mk
+endif
 
 # Bootanimation
 TARGET_SCREEN_WIDTH := 1024
